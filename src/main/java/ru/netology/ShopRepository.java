@@ -5,6 +5,7 @@ public class ShopRepository {
 
 
     private Product[] addToArray(Product[] current, Product product) {
+
         Product[] tmp = new Product[current.length + 1];
         for (int i = 0; i < current.length; i++) {
             tmp[i] = current[i];
@@ -15,9 +16,13 @@ public class ShopRepository {
 
 
     public void add(Product product) {
-
-        products = addToArray(products, product);
+        if (findById(product.getId()) == null) {
+            products = addToArray(products, product);
+        } else throw new AlreadyExistsException(
+                "Element with id: " + product.id + " already added"
+        );
     }
+
 
     public Product[] findAll() {
         return products;
@@ -31,7 +36,6 @@ public class ShopRepository {
             );
 
         }
-        ;
         Product[] tmp = new Product[products.length - 1];
         int copyToIndex = 0;
         for (Product product : products) {
